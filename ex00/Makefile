@@ -5,13 +5,13 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = main.cpp
+SRC = main.cpp BitcoinExchange.cpp
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
 
 # Name of the main executable to be generated
-NAME = main
+NAME = btc
 
 # Default target to be built
 all: $(NAME)
