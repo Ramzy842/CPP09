@@ -97,6 +97,17 @@ bool isNumber(std::string &str)
     return true;
 }
 
+bool isValidKey(std::vector<std::string> key_vec)
+{
+    for (std::vector<std::string>::iterator it = key_vec.begin(); it != key_vec.end(); it++)
+    {
+        std::string temp = *it;
+        if (std::strtod(temp.c_str(), NULL) == 0)
+            return false;
+    }
+    return true;
+}
+
 void BitcoinExchange::outputValues(char *file)
 {
     std::ifstream inputFile(file);
@@ -115,6 +126,11 @@ void BitcoinExchange::outputValues(char *file)
             continue;
         }
         std::string key = trim(line_vec[0]);
+        if (!isValidKey(split_line(key, '-')))
+        {
+            std::cout << "Error: bad input => " << line_vec[0] << std::endl;
+            continue;
+        }
         std::map<std::string, float>::iterator it = fileData.lower_bound(key);
         std::pair<std::string, float> line_pair;
         if (it == fileData.end() || it->first > key)
