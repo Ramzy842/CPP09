@@ -10,13 +10,13 @@ SRC = main.cpp RPN.cpp
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
 
-# Name of the main executable to be generated
+# Name of the RPN executable to be generated
 NAME = RPN
 
 # Default target to be built
 all: $(NAME)
 
-# Rule to generate the main executable from the object files
+# Rule to generate the RPN executable from the object files
 $(NAME): $(OBJ) RPN.hpp
 	$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 

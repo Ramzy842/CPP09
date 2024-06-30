@@ -10,13 +10,13 @@ SRC = main.cpp BitcoinExchange.cpp
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
 
-# Name of the main executable to be generated
+# Name of the btc executable to be generated
 NAME = btc
 
 # Default target to be built
 all: $(NAME)
 
-# Rule to generate the main executable from the object files
+# Rule to generate the btc executable from the object files
 $(NAME): $(OBJ) BitcoinExchange.hpp
 	$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 

@@ -5,23 +5,23 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = main.cpp
+SRC = main.cpp PmergeMe.cpp
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
 
-# Name of the main executable to be generated
-NAME = main
+# Name of the PmergeMe executable to be generated
+NAME = PmergeMe
 
 # Default target to be built
 all: $(NAME)
 
-# Rule to generate the main executable from the object files
-$(NAME): $(OBJ) BitcoinExchange.hpp
+# Rule to generate the PmergeMe executable from the object files
+$(NAME): $(OBJ) PmergeMe.hpp
 	$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 # Rule to generate the object files from the source files
-%.o: %.cpp BitcoinExchange.hpp
+%.o: %.cpp PmergeMe.hpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 # Clean target to remove generated files
