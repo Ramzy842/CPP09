@@ -5,23 +5,23 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = main.cpp
+SRC = main.cpp RPN.cpp
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
 
 # Name of the main executable to be generated
-NAME = main
+NAME = RPN
 
 # Default target to be built
 all: $(NAME)
 
 # Rule to generate the main executable from the object files
-$(NAME): $(OBJ) BitcoinExchange.hpp
+$(NAME): $(OBJ) RPN.hpp
 	$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 # Rule to generate the object files from the source files
-%.o: %.cpp BitcoinExchange.hpp
+%.o: %.cpp RPN.hpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 # Clean target to remove generated files
