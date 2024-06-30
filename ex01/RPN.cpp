@@ -92,6 +92,11 @@ void RPN::calculate(std::string &expression)
         else if (token != "+" && token != "-" && token != "/" && token != "*")
         {
             std::cout << "Error" << std::endl;
+            for (size_t x = 0; x < len; x++)
+            {
+                delete splitted_exp[x];
+            }
+            delete[] splitted_exp;
             return;
         }
         else if (numbers.size() >= 2)
@@ -118,4 +123,9 @@ void RPN::calculate(std::string &expression)
     }
     else
         std::cout << "Error: Invalid input" << std::endl;
+    for (size_t x = 0; x < len; x++)
+    {
+        delete splitted_exp[x];
+    }
+    delete[] splitted_exp;
 }
