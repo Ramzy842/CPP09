@@ -1,4 +1,16 @@
-#include "RPN.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   RPN.cpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/28 19:51:10 by rchahban          #+#    #+#             */
+/*   Updated: 2024/07/11 18:38:51 by rchahban         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "./RPN.hpp"
 
 RPN::RPN()
 {
@@ -20,54 +32,71 @@ RPN &RPN::operator=(const RPN &original)
     return *this;
 }
 
-int count_words(std::string *str_ptr)
+bool is_op(char c)
 {
-    if (str_ptr == NULL || str_ptr->empty())
-        return 0;
-    int word_count = 0;
-    bool in_word = false;
-
-    for (size_t i = 0; i < str_ptr->length(); ++i)
-    {
-        char c = str_ptr->at(i);
-        if (isspace(c))
-        {
-            if (in_word)
-                word_count++;
-            in_word = false;
-        }
-        else
-            in_word = true;
-    }
-    if (in_word)
-        word_count++;
-    return word_count;
+	if (c == '-' || c == '+' || c == '*' || c == '/')
+		return true;
+	return false;
 }
 
-std::string **split(std::string *str, size_t size)
+int count_words(std::string str)
 {
-    std::string **tokens = new std::string *[size];
+	int	count;
+	int	x;
+
+	count = 0;
+	x = 0;
+	while (str[x] != '\0')
+	{
+		if ((!isspace(str[x]) && !is_op(str[x]) && (is_op(str[x+1]) || isspace(str[x+1])))
+			|| (is_op(str[x]) && str[x + 1] == '\0') || ( is_op(str[x]) && isspace(str[x + 1]))
+			|| (!isspace(str[x]) && !is_op(str[x]) && str[x+1] == '\0')
+		)
+			count++;
+		x++;
+	}
+	return (count);
+}
+
+std::string trim(std::string &str)
+{
+    std::string whitespace = " \t";
+    size_t strBegin = str.find_first_not_of(whitespace);
+    if (strBegin == std::string::npos)
+        return "";
+    size_t strEnd = str.find_last_not_of(whitespace);
+    size_t strRange = strEnd - strBegin + 1;
+    return str.substr(strBegin, strRange);
+}
+std::string **split(std::string& str, size_t size)
+{
+	std::string **tokens = new std::string *[size];
     size_t num_tokens = 0;
+	int x = 0;
     size_t start = 0;
-    size_t pos;
-
-    while (((pos = str->find(' ', start)) != std::string::npos) || ((pos = str->find('\t', start)) != std::string::npos))
-    {
-        if (num_tokens >= size)
-            return NULL;
-        tokens[num_tokens] = new std::string(str->substr(start, pos - start));
-        start = pos + 1;
-        num_tokens++;
-    }
-    if (start < str->length())
-        tokens[num_tokens++] = new std::string(str->substr(start));
-
+	while (num_tokens < size)
+	{
+		if ((!isspace(str[x]) && !is_op(str[x])
+			&& (is_op(str[x+1]) || isspace(str[x+1]) || str[x+1] == '\0'))
+			|| (is_op(str[x]) && str[x + 1] == '\0') || ( is_op(str[x]) && isspace(str[x + 1]))
+			|| (is_op(str[x]) && isspace(str[x + 1])))
+		{
+			std::string trim_str = (str.substr(start, x + 1 - start));
+			tokens[num_tokens] = new std::string(trim(trim_str));
+			// std::cout << *tokens[num_tokens] << std::endl;
+			num_tokens++;
+			start = x + 1;
+		}
+		x++;
+	}
     return tokens;
 }
 
 bool isNumber(std::string &str)
 {
     int x = 0;
+	if (str.length() > 1 && (str[x] == '-' || str[x] == '+'))
+		x++;
     while (str[x])
     {
         if (!isdigit(str[x]))
@@ -79,15 +108,45 @@ bool isNumber(std::string &str)
 
 void RPN::calculate(std::string &expression)
 {
-    size_t len = count_words(&expression);
-    std::string **splitted_exp = split(&expression, len);
+	if (expression.empty())
+	{
+		std::cout << "Error: No expression provided!" << std::endl;
+		return ;
+	}
+    size_t len = count_words(expression);
+	expression = trim(expression);
+    std::string **splitted_exp = split(expression, len);
     for (size_t x = 0; x < len; x++)
     {
         std::string token = *splitted_exp[x];
-        if (isNumber(token))
+		if (isNumber(token))
         {
-            int number = std::strtod(token.c_str(), NULL);
+            double number = std::strtod(token.c_str(), NULL);
             this->numbers.push(number);
+        }
+		else if ((token == "+" || token == "-" || token == "/" || token == "*" ))
+        {
+			if (numbers.size() >= 2)
+			{
+				double b = numbers.top();
+            	numbers.pop();
+            	double a = numbers.top();
+            	numbers.pop();
+            	if (token == "+")
+            	    numbers.push(a + b);
+            	else if (token == "-")
+            	    numbers.push(a - b);
+            	else if (token == "/")
+            	    numbers.push(a / b);
+            	else if (token == "*")
+            	    numbers.push(a * b);
+			}
+			else
+			{
+				std::cout << "Error: Invalid input" << std::endl;
+				return ;
+			}
+            
         }
         else if (token != "+" && token != "-" && token != "/" && token != "*")
         {
@@ -99,33 +158,16 @@ void RPN::calculate(std::string &expression)
             delete[] splitted_exp;
             return;
         }
-        else if (numbers.size() >= 2)
-        {
-            int b = numbers.top();
-            numbers.pop();
-            int a = numbers.top();
-            numbers.pop();
-            if (token == "+")
-                numbers.push(a + b);
-            else if (token == "-")
-                numbers.push(a - b);
-            else if (token == "/")
-                numbers.push(a / b);
-            else if (token == "*")
-                numbers.push(a * b);
-        }
     }
     if (numbers.size() == 1)
     {
-        int result = numbers.top();
+        double result = numbers.top();
         numbers.pop();
         std::cout << result << std::endl;
     }
     else
         std::cout << "Error: Invalid input" << std::endl;
     for (size_t x = 0; x < len; x++)
-    {
         delete splitted_exp[x];
-    }
     delete[] splitted_exp;
 }

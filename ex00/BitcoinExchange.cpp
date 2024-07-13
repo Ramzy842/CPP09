@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/28 19:50:58 by rchahban          #+#    #+#             */
+/*   Updated: 2024/07/10 19:16:32 by rchahban         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./BitcoinExchange.hpp"
 
 BitcoinExchange::BitcoinExchange()
@@ -58,7 +70,7 @@ std::string BitcoinExchange::trim(std::string &str)
     std::string whitespace = " \t";
     size_t strBegin = str.find_first_not_of(whitespace);
     if (strBegin == std::string::npos)
-        return ""; // no content
+        return "";
 
     size_t strEnd = str.find_last_not_of(whitespace);
     size_t strRange = strEnd - strBegin + 1;
