@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:50:58 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/10 19:16:32 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/08/02 15:24:56 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ std::string BitcoinExchange::trim(std::string &str)
     return str.substr(strBegin, strRange);
 }
 
-std::vector<std::string> BitcoinExchange::split_line(const std::string &str, char delimiter)
+std::list<std::string> BitcoinExchange::split_line(const std::string &str, char delimiter)
 {
-    std::vector<std::string> tokens;
+    std::list<std::string> tokens;
     size_t start = 0;
     size_t pos;
 
@@ -109,9 +109,9 @@ bool isNumber(std::string &str)
     return true;
 }
 
-bool isValidKey(std::vector<std::string> key_vec)
+bool isValidKey(std::list<std::string> key_vec)
 {
-    for (std::vector<std::string>::iterator it = key_vec.begin(); it != key_vec.end(); it++)
+    for (std::list<std::string>::iterator it = key_vec.begin(); it != key_vec.end(); it++)
     {
         std::string temp = *it;
         if (std::strtod(temp.c_str(), NULL) == 0)
@@ -126,21 +126,21 @@ void BitcoinExchange::outputValues(char *file)
     if (!inputFile)
         return;
     std::string line;
-    std::vector<std::string> line_vec;
+    std::list<std::string> line_list;
     std::getline(inputFile, line);
     while (std::getline(inputFile, line))
     {
 
-        line_vec = split_line(line, '|');
-        if (line_vec.size() < 2 || line_vec[1].length() == 0)
+        line_list = split_line(line, '|');
+        if (line_list.size() < 2 || line_list.back().length() == 0)
         {
-            std::cout << "Error: bad input => " << line_vec[0] << std::endl;
+            std::cout << "Error: bad input => " << line_list.front() << std::endl;
             continue;
         }
-        std::string key = trim(line_vec[0]);
+        std::string key = trim(*line_list.begin());
         if (!isValidKey(split_line(key, '-')))
         {
-            std::cout << "Error: bad input => " << line_vec[0] << std::endl;
+            std::cout << "Error: bad input => " << line_list.front() << std::endl;
             continue;
         }
         std::map<std::string, float>::iterator it = fileData.lower_bound(key);
@@ -159,18 +159,18 @@ void BitcoinExchange::outputValues(char *file)
                 line_pair = *(it);
         try
         {
-            std::string num = trim(line_vec[1]);
+            std::string num = trim(line_list.back());
             if (!isNumber(num))
                 std::cout << "Error: Not a number" << std::endl;
             else
             {
-                double value = std::strtod(line_vec[1].c_str(), NULL);
+                double value = std::strtod(line_list.back().c_str(), NULL);
                 if (value > 1000)
                     std::cout << "Error: too large a number." << std::endl;
                 else if (value < 0)
                     std::cout << "Error: not a positive number." << std::endl;
                 else
-                    std::cout << line_vec[0] << " => " << line_vec[1] << " = " << std::strtod(line_vec[1].c_str(), NULL) * line_pair.second << std::endl;
+                    std::cout << line_list.front() << " => " << line_list.back() << " = " << std::strtod(line_list.back().c_str(), NULL) * line_pair.second << std::endl;
             }
         }
         catch (const std::exception &e)

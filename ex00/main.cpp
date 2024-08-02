@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:51:01 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/10 17:11:20 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/08/02 15:13:36 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ int main(int argc, char **argv)
         return 1;
     }
     char *fileName = argv[1];
+	if (!strlen(fileName))
+	{
+		std::cerr << "Error: Please provide a file!" << std::endl;
+        return 1;
+	}
     std::ifstream inputFile(fileName);
     if (!inputFile)
     {

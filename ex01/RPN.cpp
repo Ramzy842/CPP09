@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:51:10 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/11 18:38:51 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/08/02 15:28:00 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ std::string **split(std::string& str, size_t size)
 		{
 			std::string trim_str = (str.substr(start, x + 1 - start));
 			tokens[num_tokens] = new std::string(trim(trim_str));
-			// std::cout << *tokens[num_tokens] << std::endl;
 			num_tokens++;
 			start = x + 1;
 		}

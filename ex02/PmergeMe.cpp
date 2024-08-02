@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:51:19 by rchahban          #+#    #+#             */
-/*   Updated: 2024/08/02 02:51:22 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:28:48 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,23 @@ void PmergeMe::add_to_vec(int num1, int num2)
 {
 	this->vec.push_back(std::make_pair(num1, num2));
 }
-template<typename T> void PmergeMe::display_pairs(T& container)
+void PmergeMe::display_before(int argc, char **argv)
 {
-	typename T::iterator it;
-	for (it = container.begin(); it != container.end(); it++)
+	for (int x = 1; x < argc; x++)
 	{
-		std::cout << it->first << " " << it->second << " ";
+		std::cout << argv[x] << " ";	
 	}
-	if (!get_is_even_seq())
-		std::cout << left_over_num;
 	std::cout << std::endl;
 }
 
 template <typename T> void PmergeMe::display_result(T& container)
 {
 	typename T::iterator it;
+	int x = 0;
 	for (it = container.begin(); it != container.end(); it++)
 	{
 		std::cout << *it << " ";
+		x++;
 	}
 	std::cout << std::endl;
 }
@@ -101,7 +100,7 @@ void PmergeMe::execute(int argc, char **argv)
 	{
 		unsigned int number1 = atoi(argv[x]);
 		unsigned int number2 = atoi(argv[x + 1]);
-		if (number1 <= 0 || number2 <= 0)
+		if (number1 < 0 || number2 < 0)
 		{
 			std::cerr << "Error" << std::endl;
 			return ;
@@ -113,14 +112,14 @@ void PmergeMe::execute(int argc, char **argv)
 	if (!get_is_even_seq())
 	{
 		left_over_num = atoi(argv[x]);
-		if (left_over_num <= 0)
+		if (left_over_num < 0)
 		{
 			std::cerr << "Error" << std::endl;
 			return ;
 		}
 	}
 	std::cout << "Before: ";
-	this->display_pairs(this->deq);
+	this->display_before(argc, argv);
 
 	clock_t start1 = clock();
 	std::deque <unsigned int> deq_small_nums, deq_big_nums;

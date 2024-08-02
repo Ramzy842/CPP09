@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:51:20 by rchahban          #+#    #+#             */
-/*   Updated: 2024/08/02 02:40:00 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:28:36 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <iostream>
 #include <deque>
 #include <vector>
-#include <cstdlib>
 
 class PmergeMe
 {
@@ -32,7 +31,7 @@ class PmergeMe
         PmergeMe &operator=(const PmergeMe &original);
 		void add_to_deq(int num1, int num2);
 		void add_to_vec(int num1, int num2);
-		template <typename T> void display_pairs(T& container);
+		void display_before(int argc, char **argv);
 		template <typename T> void display_result(T& container);
 		void execute(int argc, char **argv);
 		void perform_deq_sorting(std::deque <unsigned int>& small_nums, std::deque <unsigned int>& big_nums);
