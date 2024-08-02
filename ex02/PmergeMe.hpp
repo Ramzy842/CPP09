@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:51:20 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 03:03:01 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/08/02 02:40:00 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,30 @@
 
 #include <iostream>
 #include <deque>
-#include <list>
+#include <vector>
 #include <cstdlib>
 
 class PmergeMe
 {
     private:
-		std::deque<int> deq;
-		std::list<int> list;
+		bool is_even_seq;
+		unsigned int left_over_num;
+		std::deque< std::pair<unsigned int, unsigned int> > deq;
+		std::vector< std::pair<unsigned int, unsigned int> > vec;
     public:
         PmergeMe();
         ~PmergeMe();
         PmergeMe(const PmergeMe &original);
         PmergeMe &operator=(const PmergeMe &original);
-		void add_to_deq(int num);
-		void add_to_list(int num);
-		template <typename T> void display(T& container);
-		void execute(char **argv);
-		void mrg_isrt_sort_deq(std::deque<int>& deq);
-		void mrg_isrt_sort_list(std::list<int>& list);
+		void add_to_deq(int num1, int num2);
+		void add_to_vec(int num1, int num2);
+		template <typename T> void display_pairs(T& container);
+		template <typename T> void display_result(T& container);
+		void execute(int argc, char **argv);
+		void perform_deq_sorting(std::deque <unsigned int>& small_nums, std::deque <unsigned int>& big_nums);
+		void perform_vec_sorting(std::vector <unsigned int>& small_nums, std::vector <unsigned int>& big_nums);
+		bool get_is_even_seq();
+		void set_is_even_seq(bool b);
 };
 
 #endif

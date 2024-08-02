@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:51:15 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 02:50:26 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/08/02 02:01:34 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	PmergeMe p;
-	p.execute(argv);
+	p.execute(argc, argv);
 	return 0;
 }
